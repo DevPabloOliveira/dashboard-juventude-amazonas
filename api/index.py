@@ -1,10 +1,8 @@
-# api/index.py - VERSÃO FINAL CORRIGIDA
-
 from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 import sys
-import os
+import os 
 
 # Adiciona o diretório raiz ao path para encontrar o módulo 'core'
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -13,14 +11,18 @@ from core.data_processor import data_processor
 
 app = FastAPI()
 
-# Monta o diretório 'static' para servir os arquivos do frontend
-app.mount("/static", StaticFiles(directory="static"), name="static")
+# ===== CORREÇÃO APLICADA AQUI =====
+# Constrói o caminho absoluto para a pasta 'static', que está um nível acima da pasta 'api'
+static_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'static'))
 
+# Monta o diretório 'static' usando o caminho absoluto
+app.mount("/static", StaticFiles(directory=static_path), name="static")
+# ==================================
 
 @app.get("/")
 async def read_root():
     # Serve o arquivo HTML principal
-    return FileResponse('static/index.html')
+    return FileResponse(os.path.join(static_path, 'index.html'))
 
 @app.get("/api/geral")
 async def get_geral_data(age_group: str = 'geral'):
@@ -37,10 +39,8 @@ async def get_municipio_data(nome_municipio: str, age_group: str = 'geral'):
         raise HTTPException(status_code=404, detail="Município não encontrado")
     return data
 
-# ===== ROTA CORRIGIDA =====
 @app.get("/api/mapa")
 async def get_map_data(age_group: str = 'geral'):
-    # Apenas retorne o dicionário. FastAPI converte para JSON automaticamente.
     return data_processor.get_map_data(age_group)
 
 @app.get("/api/ranking/{metric}")
