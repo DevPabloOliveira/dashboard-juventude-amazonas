@@ -2,27 +2,30 @@ from fastapi import FastAPI, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 import sys
-import os 
+import os
 
-# Adiciona o diretório raiz ao path para encontrar o módulo 'core'
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+
+# Adiciona a raiz do projeto ao path do Python para encontrar o módulo 'core'
+sys.path.append(PROJECT_ROOT)
 
 from core.data_processor import data_processor
 
 app = FastAPI()
 
-# ===== CORREÇÃO APLICADA AQUI =====
-# Constrói o caminho absoluto para a pasta 'static', que está um nível acima da pasta 'api'
-static_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'static'))
+# Constrói o caminho absoluto para a pasta 'static'
+static_path = os.path.join(PROJECT_ROOT, 'static')
 
 # Monta o diretório 'static' usando o caminho absoluto
 app.mount("/static", StaticFiles(directory=static_path), name="static")
-# ==================================
 
 @app.get("/")
 async def read_root():
-    # Serve o arquivo HTML principal
+    # Serve o arquivo HTML principal a partir do caminho absoluto
     return FileResponse(os.path.join(static_path, 'index.html'))
+
+# --- As rotas abaixo não precisam de alteração ---
 
 @app.get("/api/geral")
 async def get_geral_data(age_group: str = 'geral'):

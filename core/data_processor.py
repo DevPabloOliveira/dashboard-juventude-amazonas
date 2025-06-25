@@ -1,34 +1,37 @@
 import json
+import os
 
-PROCESSED_DATA_DIR = './processed_data'
+
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+
+# Constrói o caminho absoluto para a pasta de dados processados
+PROCESSED_DATA_DIR = os.path.join(PROJECT_ROOT, 'processed_data')
+
 
 class DataProcessor:
     def __init__(self):
-        # Carrega os dados pré-processados na inicialização
+        # Carrega os dados pré-processados usando o caminho absoluto
         try:
-            with open(f'{PROCESSED_DATA_DIR}/municipios_data.json', 'r', encoding='utf-8') as f:
+            with open(os.path.join(PROCESSED_DATA_DIR, 'municipios_data.json'), 'r', encoding='utf-8') as f:
                 self.municipios_data = json.load(f)
-            with open(f'{PROCESSED_DATA_DIR}/map_data.json', 'r', encoding='utf-8') as f:
+            with open(os.path.join(PROCESSED_DATA_DIR, 'map_data.json'), 'r', encoding='utf-8') as f:
                 self.map_data = json.load(f)
-            with open(f'{PROCESSED_DATA_DIR}/municipio_list.json', 'r', encoding='utf-8') as f:
+            with open(os.path.join(PROCESSED_DATA_DIR, 'municipio_list.json'), 'r', encoding='utf-8') as f:
                 self.municipio_list = json.load(f)
         except FileNotFoundError:
-            print("ERRO: Arquivos de dados pré-processados não encontrados.")
-            print("Execute o script 'preprocess.py' primeiro.")
-            # Inicializa com dados vazios para evitar que a aplicação quebre
+            print(f"ERRO: Arquivos de dados não encontrados no diretório: {PROCESSED_DATA_DIR}")
+            print("Certifique-se de que o script 'preprocess.py' foi executado.")
             self.municipios_data = {}
             self.map_data = {}
             self.municipio_list = []
 
+    # --- O restante do arquivo não precisa de nenhuma alteração ---
 
     def get_geral_data(self, age_group: str = 'geral'):
-        # Soma os dados de todos os municípios para obter o total do estado
         all_mun_data = self.municipios_data.get(age_group, {}).values()
-        if not all_mun_data:
-            return {}
+        if not all_mun_data: return {}
 
         geral = {}
-        # Inicializa as chaves numéricas
         for key in next(iter(all_mun_data), {}):
             if isinstance(next(iter(all_mun_data), {})[key], (int, float)):
                 geral[key] = sum(mun.get(key, 0) for mun in all_mun_data)
@@ -36,7 +39,6 @@ class DataProcessor:
         total_jovens = geral.get('total_jovens', 0)
         taxa_alfabetizacao = (geral.get('total_jovens_alfabetizados', 0) / total_jovens if total_jovens > 0 else 0) * 100
         
-        # A renda média do estado é a média das rendas médias dos municípios
         renda_media_total = sum(mun.get('renda_media_final', 0) for mun in all_mun_data)
         renda_media_estado = renda_media_total / len(all_mun_data) if all_mun_data else 0
         
@@ -95,7 +97,6 @@ class DataProcessor:
         top_5 = [{"municipio": item['NM_MUN_demanda'], "value": item[column]} for item in sorted_data[:top_n]]
         bottom_5 = [{"municipio": item['NM_MUN_demanda'], "value": item[column]} for item in sorted_data[-top_n:]]
         
-        # Garante que a ordenação do bottom 5 seja a inversa do top 5
         if not ascending:
             bottom_5.sort(key=lambda x: x['value'], reverse=False)
         else:
@@ -103,5 +104,5 @@ class DataProcessor:
 
         return {"top_5": top_5, "bottom_5": bottom_5}
 
-# Instancia o novo processador leve
+
 data_processor = DataProcessor()
