@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Juventude no Amazonas</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+    <div class="container">
+<header class="header">
+    <div class="title">
+        <h1><i class="ph-fill ph-chart-bar"></i>Juventude no Amazonas</h1>
+        <p>Análise demográfica e socioeconômica da população jovem</p>
+    </div>
+    <div class="filters">
+        <div class="filter-item">
+            <label for="age-select">Filtrar por Faixa Etária:</label>
+            <select id="age-select" class="filter-select">
+                <option value="geral" selected>15 a 29 anos (Todas)</option>
+                <option value="15-19">15 a 19 anos</option>
+                <option value="20-24">20 a 24 anos</option>
+                <option value="25-29">25 a 29 anos</option>
+            </select>
+        </div>
+        <div class="filter-item">
+            <label for="municipio-select">Filtrar por Localidade:</label>
+            <select id="municipio-select" class="filter-select">
+                </select>
+        </div>
+    </div>
+</header>
+
+        <main>
+        <section class="kpi-section">
+            <div class="card kpi-card">
+                <div class="card-icon" style="background-color: #e0f2f1;">
+                    <i class="ph-fill ph-users" style="color: #00796b;"></i>
+                </div>
+                <div class="kpi-content">
+                    <span class="kpi-title" id="kpi-total-jovens-title">Total de Jovens (15-29)</span>
+                    <span class="kpi-value" id="kpi-total-jovens">--</span>
+                </div>
+            </div>
+            <div class="card kpi-card">
+                <div class="card-icon" style="background-color: #fff8e1;">
+                    <i class="ph-fill ph-money" style="color: #ffa000;"></i>
+                </div>
+                <div class="kpi-content">
+                    <span class="kpi-title" id="kpi-renda-media-title">Renda Média (Município)</span>
+                    <span class="kpi-value" id="kpi-renda-media">--</span>
+                </div>
+            </div>
+            <div class="card kpi-card">
+                <div class="card-icon" style="background-color: #e3f2fd;">
+                    <i class="ph-fill ph-student" style="color: #1976d2;"></i>
+                </div>
+                <div class="kpi-content">
+                    <span class="kpi-title" id="kpi-taxa-alfabetizacao-title">Taxa de Alfabetização</span>
+                    <span class="kpi-value" id="kpi-taxa-alfabetizacao">--</span>
+                </div>
+            </div>
+        </section>
+
+            <section class="charts-section grid">
+                <div class="card chart-card">
+                    <h3 class="card-title">Distribuição por Faixa Etária</h3>
+                    <div class="chart-container">
+                        <canvas id="ageDistributionChart"></canvas>
+                    </div>
+                </div>
+                <div class="card chart-card">
+                    <h3 class="card-title">Composição por Raça/Cor</h3>
+                    <div class="chart-container">
+                        <canvas id="raceDistributionChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section id="seasonal-highlight-section" style="display: none;">
+    <div class="card highlight-card">
+        <div class="highlight-header">
+            <i class="ph-fill ph-sparkle"></i>
+            <h3>Destaque do Mês: O Festival e a Juventude de Parintins</h3>
+        </div>
+        <div class="highlight-content">
+            <p><strong>Impacto Econômico e Cultural:</strong> O Festival de Parintins é um motor para a economia criativa, gerando milhares de oportunidades temporárias para jovens nas áreas de produção artística, turismo e serviços. Estima-se que a renda média de jovens em Parintins apresente um aumento sazonal significativo neste período.</p>
+            <p><strong>Protagonismo Jovem:</strong> A energia do festival é movida pela juventude. Como artistas, organizadores e voluntários, os jovens não são apenas espectadores, mas protagonistas na manutenção e inovação da maior ópera a céu aberto do mundo.</p>
+        </div>
+    </div>
+</section>
+
+            <section class="map-section">
+                <div class="section-header">
+                    <h2 class="section-title">Análise Geográfica dos Municípios</h2>
+                    <div class="map-filter-container">
+                        <label for="map-metric-select">Visualizar no mapa por:</label>
+                        <select id="map-metric-select">
+                            <option value="vulnerabilidade" selected>Score de Vulnerabilidade</option>
+                            <option value="renda">Renda Média (Jovens)</option>
+                            <option value="alfabetizacao">Taxa de Alfabetização (Jovens)</option>
+                            <option value="populacao">População Jovem (Total)</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="map-grid-container">
+                    <div class="card" id="map-card">
+                         <div id="map"></div>
+                    </div>
+            
+                    <div class="card" id="ranking-card">
+                        <h3 class="card-title" id="ranking-title">Destaques por Vulnerabilidade</h3>
+                        <div id="ranking-content">
+                            </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>Fonte dos Dados: Censo (IBGE) / GeoBR - Processados para este Dashboard.</p>
+        </footer>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
