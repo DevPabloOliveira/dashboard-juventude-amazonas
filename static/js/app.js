@@ -5,7 +5,7 @@ let ageChart, raceChart, map, geojsonLayer, legendControl;
 let currentMapMetric = 'vulnerabilidade';
 let currentAgeGroup = 'geral';
 let currentLocation = 'geral';
-let isMapReady = false; // <<< Flag para controlar a primeira inicialização do mapa
+let isMapReady = false;
 
 // Configuração das Métricas para o Mapa e Legendas
 const metricsConfig = {
@@ -30,7 +30,7 @@ const metricsConfig = {
         format: (val) => val !== null ? val.toLocaleString('pt-BR') : 'N/A'
     }
 };
-const CHART_COLORS = ['#00796b', '#ffa000', '#1976d2', '#d32f2f', '#5e35b1', '#fdd835'];
+const CHART_COLORS = ['#00796b', '#ffc107', '#1976d2', '#d32f2f', '#5e35b1', '#fdd835'];
 
 document.addEventListener('DOMContentLoaded', initDashboard);
 
@@ -40,9 +40,8 @@ function initDashboard() {
     addEventListeners();
     updateAllData();
 
-    // Lógica para mostrar o card sazonal
     const hoje = new Date();
-    if (hoje.getMonth() === 5) { // getMonth() retorna 5 para Junho
+    if (hoje.getMonth() === 5) { 
         const seasonalCard = document.getElementById('seasonal-highlight-section');
         if (seasonalCard) seasonalCard.style.display = 'block';
     }
@@ -91,15 +90,13 @@ async function updateMapAndRanking() {
             geojsonLayer.clearLayers().addData(mapData);
         }
         updateLegend();
-        await updateRankingCard(); // << Espera o ranking carregar
+        await updateRankingCard();
 
-        // A CORREÇÃO ESTÁ AQUI
-        // Invalida o tamanho do mapa APENAS na primeira vez, DEPOIS que tudo foi carregado.
         if (!isMapReady) {
             setTimeout(() => {
                 map.invalidateSize(true);
                 isMapReady = true;
-            }, 100); // Um pequeno delay para garantir que o DOM se ajustou.
+            }, 100);
         }
 
     } catch (error) {
@@ -126,21 +123,38 @@ function updateKpiCards(data) {
 }
 
 function updateCharts(data) {
-    // ... (código sem alterações)
     const ageData = {
         labels: Object.keys(data.distribuicao_etaria),
         values: Object.values(data.distribuicao_etaria)
     };
+
+    // ===== CORREÇÃO APLICADA AQUI =====
     const raceData = {
         labels: ['Parda', 'Branca', 'Indígena', 'Preta', 'Amarela'],
-        values: Object.values(data.distribuicao_raca)
+        values: [0, 0, 0, 0, 0] // Começa com valores zerados por segurança
     };
+
+    // Preenche os valores na ordem correta, garantindo que a propriedade exista
+    if (data && data.distribuicao_raca) {
+        raceData.values = [
+            data.distribuicao_raca.parda,
+            data.distribuicao_raca.branca,
+            data.distribuicao_raca.indigena,
+            data.distribuicao_raca.preta,
+            data.distribuicao_raca.amarela
+        ];
+    }
+    // ===================================
+
+    // Atualiza o gráfico de Faixa Etária
     if (ageChart) ageChart.destroy();
     ageChart = new Chart(document.getElementById('ageDistributionChart'), {
         type: 'bar',
         data: { labels: ageData.labels, datasets: [{ label: 'População', data: ageData.values, backgroundColor: CHART_COLORS }] },
         options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
     });
+
+    // Atualiza o gráfico de Raça/Cor
     if (raceChart) raceChart.destroy();
     raceChart = new Chart(document.getElementById('raceDistributionChart'), {
         type: 'doughnut',
@@ -150,7 +164,6 @@ function updateCharts(data) {
 }
 
 async function populateMunicipioFilter() {
-    // ... (código sem alterações)
     try {
         const response = await fetch('/api/municipios');
         const municipios = await response.json();
@@ -177,7 +190,6 @@ function initializeMap() {
 
 // Funções do Mapa (styleFeature, onEachFeature, getColor, updateLegend)
 function styleFeature(feature) {
-    // ... (código sem alterações)
     const config = metricsConfig[currentMapMetric];
     const value = feature.properties[config.property];
     return {
@@ -186,7 +198,6 @@ function styleFeature(feature) {
     };
 }
 function onEachFeature(feature, layer) {
-    // ... (código sem alterações)
     const props = feature.properties;
     if (props && props.nome) {
         let popupContent = `<b>${props.nome}</b><br>`;
@@ -204,7 +215,6 @@ function onEachFeature(feature, layer) {
     });
 }
 function getColor(d, grades, colors) {
-    // ... (código sem alterações)
     if (d === null || d === undefined) return '#cccccc';
     for (let i = grades.length - 1; i >= 0; i--) {
         if (d > grades[i]) return colors[i + 1];
@@ -212,7 +222,6 @@ function getColor(d, grades, colors) {
     return colors[0];
 }
 function updateLegend() {
-    // ... (código sem alterações)
     if (legendControl) map.removeControl(legendControl);
     const config = metricsConfig[currentMapMetric];
     legendControl = L.control({ position: 'bottomright' });
@@ -233,7 +242,6 @@ function updateLegend() {
     legendControl.addTo(map);
 }
 async function updateRankingCard() {
-    // ... (código sem alterações)
     const config = metricsConfig[currentMapMetric];
     document.getElementById('ranking-title').textContent = `Destaques por ${config.label}`;
     const rankingContent = document.getElementById('ranking-content');
