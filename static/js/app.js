@@ -111,15 +111,18 @@ function updateKpiCards(data) {
     };
     const ageLabel = ageTextMap[currentAgeGroup];
 
+    // Atualiza Card 1: Total de Jovens
     document.getElementById('kpi-total-jovens-title').textContent = `Total de Jovens ${ageLabel}`;
-    document.getElementById('kpi-total-jovens').textContent = data.total_jovens.toLocaleString('pt-BR');
+    document.getElementById('kpi-total-jovens').querySelector('.kpi-number').textContent = data.total_jovens.toLocaleString('pt-BR');
 
+    // Atualiza Card 2: Renda Média
     const locationLabel = currentLocation === 'geral' ? '(Estado)' : '(Município)';
     document.getElementById('kpi-renda-media-title').textContent = `Renda Média ${locationLabel}`;
-    document.getElementById('kpi-renda-media').textContent = `R$ ${data.renda_media.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    document.getElementById('kpi-renda-media').querySelector('.kpi-number').textContent = data.renda_media.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
+    // Atualiza Card 3: Taxa de Alfabetização
     document.getElementById('kpi-taxa-alfabetizacao-title').textContent = `Taxa de Alfabetização ${ageLabel}`;
-    document.getElementById('kpi-taxa-alfabetizacao').textContent = `${data.taxa_alfabetizacao_jovens.toFixed(1)}%`;
+    document.getElementById('kpi-taxa-alfabetizacao').querySelector('.kpi-number').textContent = data.taxa_alfabetizacao_jovens.toFixed(1);
 }
 
 function updateCharts(data) {
@@ -128,10 +131,10 @@ function updateCharts(data) {
         values: Object.values(data.distribuicao_etaria)
     };
 
-    // ===== CORREÇÃO APLICADA AQUI =====
+    // ===== CORREÇÃO APLICADA =====
     const raceData = {
         labels: ['Parda', 'Branca', 'Indígena', 'Preta', 'Amarela'],
-        values: [0, 0, 0, 0, 0] // Começa com valores zerados por segurança
+        values: [0, 0, 0, 0, 0] 
     };
 
     // Preenche os valores na ordem correta, garantindo que a propriedade exista

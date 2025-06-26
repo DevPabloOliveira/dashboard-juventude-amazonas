@@ -1,76 +1,88 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Juventude no Amazonas</title>
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-    
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
     <link rel="stylesheet" href="/static/css/style.css">
 </head>
+
 <body>
 
     <div class="container">
-<header class="header">
-    <div class="title">
-        <h1><i class="ph-fill ph-chart-bar"></i>Juventude no Amazonas</h1>
-        <p>Análise demográfica e socioeconômica da população jovem</p>
-    </div>
-    <div class="filters">
-        <div class="filter-item">
-            <label for="age-select">Filtrar por Faixa Etária:</label>
-            <select id="age-select" class="filter-select">
-                <option value="geral" selected>15 a 29 anos (Todas)</option>
-                <option value="15-19">15 a 19 anos</option>
-                <option value="20-24">20 a 24 anos</option>
-                <option value="25-29">25 a 29 anos</option>
-            </select>
-        </div>
-        <div class="filter-item">
-            <label for="municipio-select">Filtrar por Localidade:</label>
-            <select id="municipio-select" class="filter-select">
-                </select>
-        </div>
-    </div>
-</header>
+        <header class="header">
+            <div class="title">
+                <h1><i class="ph-fill ph-chart-bar"></i>Juventude no Amazonas</h1>
+                <p>Análise demográfica e socioeconômica da população jovem</p>
+            </div>
+            <div class="filters">
+                <div class="filter-item">
+                    <label for="age-select">Filtrar por Faixa Etária:</label>
+                    <select id="age-select" class="filter-select">
+                        <option value="geral" selected>15 a 29 anos (Todas)</option>
+                        <option value="15-19">15 a 19 anos</option>
+                        <option value="20-24">20 a 24 anos</option>
+                        <option value="25-29">25 a 29 anos</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label for="municipio-select">Filtrar por Localidade:</label>
+                    <select id="municipio-select" class="filter-select">
+                    </select>
+                </div>
+            </div>
+        </header>
 
         <main>
-        <section class="kpi-section">
-            <div class="card kpi-card">
-                <div class="card-icon" style="background-color: #e0f2f1;">
-                    <i class="ph-fill ph-users" style="color: #00796b;"></i>
+            <section class="kpi-section">
+                <div class="card kpi-card">
+                    <div class="card-icon" style="background-color: #e0f2f1;">
+                        <i class="ph-fill ph-users" style="color: #00796b;"></i>
+                    </div>
+                    <div class="kpi-content">
+                        <span class="kpi-title" id="kpi-total-jovens-title">Total de Jovens (15-29)</span>
+                        <div class="kpi-value" id="kpi-total-jovens">
+                            <span class="kpi-number">--</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="kpi-content">
-                    <span class="kpi-title" id="kpi-total-jovens-title">Total de Jovens (15-29)</span>
-                    <span class="kpi-value" id="kpi-total-jovens">--</span>
+
+                <div class="card kpi-card">
+                    <div class="card-icon" style="background-color: #fff8e1;">
+                        <i class="ph-fill ph-money" style="color: #ffa000;"></i>
+                    </div>
+                    <div class="kpi-content">
+                        <span class="kpi-title" id="kpi-renda-media-title">Renda Média (Município)</span>
+                        <div class="kpi-value" id="kpi-renda-media">
+                            <span class="kpi-currency">R$</span>
+                            <span class="kpi-number">--</span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="card kpi-card">
-                <div class="card-icon" style="background-color: #fff8e1;">
-                    <i class="ph-fill ph-money" style="color: #ffa000;"></i>
+
+                <div class="card kpi-card">
+                    <div class="card-icon" style="background-color: #e3f2fd;">
+                        <i class="ph-fill ph-student" style="color: #1976d2;"></i>
+                    </div>
+                    <div class="kpi-content">
+                        <span class="kpi-title" id="kpi-taxa-alfabetizacao-title">Taxa de Alfabetização</span>
+                        <div class="kpi-value" id="kpi-taxa-alfabetizacao">
+                            <span class="kpi-number">--</span>
+                            <span class="kpi-percentage">%</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="kpi-content">
-                    <span class="kpi-title" id="kpi-renda-media-title">Renda Média (Município)</span>
-                    <span class="kpi-value" id="kpi-renda-media">--</span>
-                </div>
-            </div>
-            <div class="card kpi-card">
-                <div class="card-icon" style="background-color: #e3f2fd;">
-                    <i class="ph-fill ph-student" style="color: #1976d2;"></i>
-                </div>
-                <div class="kpi-content">
-                    <span class="kpi-title" id="kpi-taxa-alfabetizacao-title">Taxa de Alfabetização</span>
-                    <span class="kpi-value" id="kpi-taxa-alfabetizacao">--</span>
-                </div>
-            </div>
-        </section>
+            </section>
 
             <section class="charts-section grid">
                 <div class="card chart-card">
@@ -88,17 +100,17 @@
             </section>
 
             <section id="seasonal-highlight-section" style="display: none;">
-    <div class="card highlight-card">
-        <div class="highlight-header">
-            <i class="ph-fill ph-sparkle"></i>
-            <h3>Destaque do Mês: O Festival e a Juventude de Parintins</h3>
-        </div>
-        <div class="highlight-content">
-            <p><strong>Impacto Econômico e Cultural:</strong> O Festival de Parintins é um motor para a economia criativa, gerando milhares de oportunidades temporárias para jovens nas áreas de produção artística, turismo e serviços. Estima-se que a renda média de jovens em Parintins apresente um aumento sazonal significativo neste período.</p>
-            <p><strong>Protagonismo Jovem:</strong> A energia do festival é movida pela juventude. Como artistas, organizadores e voluntários, os jovens não são apenas espectadores, mas protagonistas na manutenção e inovação da maior ópera a céu aberto do mundo.</p>
-        </div>
-    </div>
-</section>
+                <div class="card highlight-card">
+                    <div class="highlight-header">
+                        <i class="ph-fill ph-sparkle"></i>
+                        <h3>Destaque do Mês: O Festival e a Juventude de Parintins</h3>
+                    </div>
+                    <div class="highlight-content">
+                        <p><strong>Impacto Econômico e Cultural:</strong> O Festival de Parintins é um motor para a economia criativa, gerando milhares de oportunidades temporárias para jovens nas áreas de produção artística, turismo e serviços. Estima-se que a renda média de jovens em Parintins apresente um aumento sazonal significativo neste período.</p>
+                        <p><strong>Protagonismo Jovem:</strong> A energia do festival é movida pela juventude. Como artistas, organizadores e voluntários, os jovens não são apenas espectadores, mas protagonistas na manutenção e inovação da maior ópera a céu aberto do mundo.</p>
+                    </div>
+                </div>
+            </section>
 
             <section class="map-section">
                 <div class="section-header">
@@ -113,48 +125,48 @@
                         </select>
                     </div>
                 </div>
-                
+
                 <div class="map-grid-container">
                     <div class="card" id="map-card">
-                         <div id="map"></div>
+                        <div id="map"></div>
                     </div>
-            
+
                     <div class="card" id="ranking-card">
                         <h3 class="card-title" id="ranking-title">Destaques por Vulnerabilidade</h3>
                         <div id="ranking-content">
-                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="agradecimentos-section">
+                <h2 class="section-title">Apoio Institucional</h2>
+                <div class="card agradecimentos-card">
+                    <p class="intro-text">
+                        Este Dashboard foi desenvolvido com o apoio e a infraestrutura das seguintes instituições,
+                        fundamentais para a pesquisa e análise de dados na região.
+                    </p>
+                    <div class="logos-container">
+                        <div class="logo-item">
+                            <img src="/static/img/logo-ufam-500x500.png" alt="Logo UFAM">
+                            <p class="logo-name">Universidade Federal do Amazonas</p>
+                        </div>
+                        <div class="logo-item">
+                            <img src="/static/img/logo-icet-500x500.png" alt="Logo ICET">
+                            <p class="logo-name">Instituto de Ciências Exatas e Tecnologia</p>
+                        </div>
+                        <div class="logo-item">
+                            <img src="/static/img/logo-nupec-500x500.png" alt="Logo NUPEC">
+                            <p class="logo-name">Núcleo de Pesquisa em Ciências de Dados e Otimização</p>
+                        </div>
+                        <div class="logo-item">
+                            <img src="/static/img/logo-lamapp-500x500.png" alt="Logo LAMAPP">
+                            <p class="logo-name">Laboratório de Monitoramento e Avaliação de Políticas Públicas</p>
+                        </div>
                     </div>
                 </div>
             </section>
         </main>
-
-<section class="agradecimentos-section">
-    <h2 class="section-title">Apoio Institucional</h2>
-    <div class="card agradecimentos-card">
-        <p class="intro-text">
-            Este dashboard foi desenvolvido com o apoio e a infraestrutura das seguintes instituições,
-            fundamentais para a pesquisa e análise de dados na região.
-        </p>
-        <div class="logos-container">
-            <div class="logo-item">
-                <img src="/static/img/logo-ufam-500x500.png" alt="Logo UFAM">
-                <p class="logo-name">Universidade Federal do Amazonas</p>
-            </div>
-            <div class="logo-item">
-                <img src="/static/img/logo-icet-500x500.png" alt="Logo ICET">
-                <p class="logo-name">Instituto de Ciências Exatas e Tecnologia</p>
-            </div>
-            <div class="logo-item">
-                <img src="/static/img/logo-nupec-500x500.png" alt="Logo NUPEC">
-                <p class="logo-name">Núcleo de Pesquisa em Ciências de Dados e Otimização</p>
-            </div>
-            <div class="logo-item">
-                <img src="/static/img/logo-lamapp-500x500.png" alt="Logo LAMAPP">
-                <p class="logo-name">Laboratório de Monitoramento e Avaliação de Políticas Públicas</p>
-            </div>
-        </div>
-    </div>
-</section>
 
         <footer class="footer">
             <p>Fonte dos Dados: Censo (IBGE) / GeoBR - Processados para este Dashboard.</p>
@@ -165,4 +177,5 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/static/js/app.js"></script>
 </body>
+
 </html>
