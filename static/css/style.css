@@ -107,7 +107,7 @@ body {
 }
 
 /* ============================================= */
-/* SEÇÃO DE KPIs CORRIGIDA              */
+/* SEÇÃO DE KPIs                                 */
 /* ============================================= */
 .kpi-section {
     display: grid;
@@ -142,26 +142,23 @@ body {
 }
 
 .kpi-value {
-    display: flex; /* Alinha os elementos internos (R$, número, %) */
+    display: flex; 
     align-items: baseline;
     gap: 0.25rem;
     font-weight: 700;
 }
 
 .kpi-number {
-    font-size: 2.2rem; /* Tamanho grande para o número principal */
+    font-size: 2.2rem; 
     color: var(--text-color);
 }
 
 .kpi-currency, .kpi-percentage {
-    font-size: 1.5rem; /* Tamanho menor para os símbolos */
+    font-size: 1.5rem;
     font-weight: 600;
     color: var(--text-light);
 }
 
-/* ============================================= */
-/* FIM DA SEÇÃO CORRIGIDA               */
-/* ============================================= */
 
 /* Charts Section */
 .charts-section {
@@ -306,6 +303,107 @@ body {
     color: var(--danger-color, #d32f2f);
 }
 
+/* --- Estilos para a Seção de Agradecimentos --- */
+.agradecimentos-section {
+    text-align: center;
+    margin-bottom: 2rem;
+    margin-top: 2.2rem; 
+}
+
+.agradecimentos-card .intro-text {
+    max-width: 800px;
+    margin: 0 auto 2.5rem auto; 
+    color: var(--text-light);
+    line-height: 1.8;
+}
+
+.logos-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
+    justify-content: center;
+    align-items: start; 
+    gap: 2.5rem; 
+}
+
+.logo-item {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo-item img {
+    max-width: 120px; 
+    max-height: 100px;
+    object-fit: contain;
+    opacity: 0.8;
+    transition: all 0.3s ease;
+}
+
+.logo-item img:hover {
+    filter: grayscale(0%);
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+.logo-item .logo-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-color);
+    height: 40px; 
+    display: flex;
+    align-items: center;
+}
+
+/* --- Estilos para a Seção de Créditos de Desenvolvimento --- */
+.development-credits-section {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.development-credits-card {
+    padding: 2rem;
+}
+
+.developer-info {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    align-items: stretch; 
+}
+
+.person {
+    display: grid;
+    grid-template-rows: auto auto 1fr; 
+    gap: 0.75rem;
+    text-align: center;
+    flex: 1;
+}
+
+.person img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.person-name {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-color);
+    line-height: 1.4;
+    padding-top: 0.5rem;
+}
+
+.person-bio {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    line-height: 1.6;
+    text-align: justify; 
+    align-self: start;
+}
 
 /* Leaflet Map Popups & Legend */
 .leaflet-popup-content-wrapper {
@@ -400,56 +498,9 @@ body {
         flex-direction: column;
         align-items: flex-start;
     }
-}
 
-/* --- Estilos para a Seção de Agradecimentos --- */
-.agradecimentos-section {
-    text-align: center;
-    margin-bottom: 2rem;
-    margin-top: 2.2rem; 
-}
-
-.agradecimentos-card .intro-text {
-    max-width: 800px;
-    margin: 0 auto 2.5rem auto; 
-    color: var(--text-light);
-    line-height: 1.8;
-}
-
-.logos-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); 
-    justify-content: center;
-    align-items: start; 
-    gap: 2.5rem; 
-}
-
-.logo-item {
-    display: flex;
-    flex-direction: column; 
-    align-items: center;
-    gap: 1rem;
-}
-
-.logo-item img {
-    max-width: 120px; 
-    max-height: 100px;
-    object-fit: contain;
-    opacity: 0.8;
-    transition: all 0.3s ease;
-}
-
-.logo-item img:hover {
-    filter: grayscale(0%);
-    opacity: 1;
-    transform: scale(1.05);
-}
-
-.logo-item .logo-name {
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: var(--text-color);
-    height: 40px; 
-    display: flex;
-    align-items: center;
+    .developer-info {
+        flex-direction: column;
+        gap: 2rem;
+    }
 }
