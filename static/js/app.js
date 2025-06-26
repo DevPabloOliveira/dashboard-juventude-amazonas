@@ -1,6 +1,3 @@
-// static/js/app.js - VERSÃO FINAL CORRIGIDA
-
-// Variáveis globais
 let ageChart, raceChart, map, geojsonLayer, legendControl;
 let currentMapMetric = 'vulnerabilidade';
 let currentAgeGroup = 'geral';
