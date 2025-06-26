@@ -1,101 +1,89 @@
 import json
 import os
 
+# --- CAMINHOS PARA OS DADOS GRANULARES ---
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 PROCESSED_DATA_DIR = os.path.join(PROJECT_ROOT, 'processed_data')
+DETAILS_DIR = os.path.join(PROCESSED_DATA_DIR, 'details')
+RANKING_DIR = os.path.join(PROCESSED_DATA_DIR, 'rankings')
+MAPS_DIR = os.path.join(PROCESSED_DATA_DIR, 'maps')
 
 class DataProcessor:
     def __init__(self):
         try:
-            with open(os.path.join(PROCESSED_DATA_DIR, 'municipios_data.json'), 'r', encoding='utf-8') as f:
-                self.municipios_data = json.load(f)
-            with open(os.path.join(PROCESSED_DATA_DIR, 'map_data.json'), 'r', encoding='utf-8') as f:
-                self.map_data = json.load(f)
             with open(os.path.join(PROCESSED_DATA_DIR, 'municipio_list.json'), 'r', encoding='utf-8') as f:
                 self.municipio_list = json.load(f)
         except FileNotFoundError:
-            print(f"ERRO: Arquivos de dados não encontrados no diretório: {PROCESSED_DATA_DIR}")
-            self.municipios_data = {}
-            self.map_data = {}
+            print(f"ERRO: Arquivo 'municipio_list.json' não encontrado em: {PROCESSED_DATA_DIR}")
             self.municipio_list = []
 
     def get_geral_data(self, age_group: str = 'geral'):
-        all_mun_data = self.municipios_data.get(age_group, {}).values()
-        if not all_mun_data: return {}
-        geral = {}
-        for key in next(iter(all_mun_data), {}):
-            if isinstance(next(iter(all_mun_data), {})[key], (int, float)):
-                geral[key] = sum(mun.get(key, 0) for mun in all_mun_data)
-        total_jovens = geral.get('total_jovens', 0)
-        taxa_alfabetizacao = (geral.get('total_jovens_alfabetizados', 0) / total_jovens if total_jovens > 0 else 0) * 100
-        renda_media_total = sum(mun.get('renda_media_final', 0) for mun in all_mun_data)
-        renda_media_estado = renda_media_total / len(all_mun_data) if all_mun_data else 0
-        age_cols_map = {'geral': ['15-19 ANOS', '20-24 ANOS', '25-29 ANOS'], '15-19':['15-19 ANOS'], '20-24':['20-24 ANOS'], '25-29':['25-29 ANOS']}
-        return {
-            "total_jovens": int(total_jovens),
-            "renda_media": round(renda_media_estado, 2),
-            "taxa_alfabetizacao_jovens": round(taxa_alfabetizacao, 2),
-            "distribuicao_etaria": {col.replace(" ANOS", "").replace("-", " a "): int(geral.get(col, 0)) for col in age_cols_map.get(age_group, [])},
-            "distribuicao_raca": {
-                "branca": int(geral.get('total_jovens_branca', 0)), "preta": int(geral.get('total_jovens_preta', 0)),
-                "parda": int(geral.get('total_jovens_parda', 0)), "indigena": int(geral.get('total_jovens_indigena', 0)),
-                "amarela": int(geral.get('total_jovens_amarela', 0)),
-            }
-        }
+        file_path = os.path.join(DETAILS_DIR, 'AMAZONAS.json')
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                all_state_data = json.load(f)
+                return all_state_data.get(age_group)
+        except FileNotFoundError:
+            print(f"ERRO: Arquivo de dados gerais 'AMAZONAS.json' não encontrado.")
+            return None
 
     def get_data_by_municipio(self, nome_municipio: str, age_group: str = 'geral'):
-        mun_data = self.municipios_data.get(age_group, {}).get(nome_municipio.upper())
-        if not mun_data: return None
-        age_cols_map = {'geral': ['15-19 ANOS', '20-24 ANOS', '25-29 ANOS'], '15-19':['15-19 ANOS'], '20-24':['20-24 ANOS'], '25-29':['25-29 ANOS']}
-        return {
-            "total_jovens": mun_data.get('total_jovens', 0),
-            "renda_media": mun_data.get('renda_media_final', 0),
-            "taxa_alfabetizacao_jovens": mun_data.get('taxa_alfabetizacao_jovens', 0),
-            "distribuicao_etaria": {col.replace(" ANOS", "").replace("-", " a "): mun_data.get(col, 0) for col in age_cols_map.get(age_group, [])},
-            "distribuicao_raca": {
-                "branca": mun_data.get('total_jovens_branca', 0), "preta": mun_data.get('total_jovens_preta', 0),
-                "parda": mun_data.get('total_jovens_parda', 0), "indigena": mun_data.get('total_jovens_indigena', 0),
-                "amarela": mun_data.get('total_jovens_amarela', 0),
-            }
-        }
+        """
+        Busca os dados de um município e FORMATA a saída para ser consistente com a API.
+        """
+        municipio_name_upper = nome_municipio.upper()
+        file_path = os.path.join(DETAILS_DIR, f'{municipio_name_upper}.json')
+        
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                municipio_data_raw = json.load(f)
+                data = municipio_data_raw.get(age_group)
+                
+                if not data:
+                    return None
+
+                # Formata o dicionário de saída para corresponder ao que o frontend espera,
+                # garantindo consistência com a rota get_geral_data.
+                age_cols_map = {'geral': ['15-19 ANOS', '20-24 ANOS', '25-29 ANOS'], '15-19':['15-19 ANOS'], '20-24':['20-24 ANOS'], '25-29':['25-29 ANOS']}
+                
+                return {
+                    "total_jovens": data.get('total_jovens', 0),
+                    # Renomeia a chave 'renda_media_final' para 'renda_media'
+                    "renda_media": data.get('renda_media_final', 0), 
+                    "taxa_alfabetizacao_jovens": data.get('taxa_alfabetizacao_jovens', 0),
+                    "distribuicao_etaria": {col.replace(" ANOS", "").replace("-", " a "): data.get(col, 0) for col in age_cols_map.get(age_group, [])},
+                    "distribuicao_raca": {
+                        "branca": data.get('total_jovens_branca', 0),
+                        "preta": data.get('total_jovens_preta', 0),
+                        "parda": data.get('total_jovens_parda', 0),
+                        "indigena": data.get('total_jovens_indigena', 0),
+                        "amarela": data.get('total_jovens_amarela', 0),
+                    }
+                }
+
+        except FileNotFoundError:
+            print(f"ERRO: Arquivo para o município '{municipio_name_upper}' não encontrado.")
+            return None
         
     def get_municipio_list(self):
         return self.municipio_list
 
     def get_map_data(self, age_group: str = 'geral'):
-        return self.map_data.get(age_group, {"type": "FeatureCollection", "features": []})
+        file_path = os.path.join(MAPS_DIR, f'map_data_{age_group}.json')
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except FileNotFoundError:
+            print(f"ERRO: Arquivo de mapa 'map_data_{age_group}.json' não encontrado.")
+            return {"type": "FeatureCollection", "features": []}
 
-    # ===== FUNÇÃO CORRIGIDA PARA MAIOR ROBUSTEZ =====
-    def get_ranking_by_metric(self, metric: str, age_group: str = 'geral', top_n: int = 5):
-        metric_map = {'vulnerabilidade': 'vul_score_final', 'renda': 'renda_media_final', 'alfabetizacao': 'taxa_alfabetizacao_jovens', 'populacao': 'total_jovens'}
-        column = metric_map.get(metric)
-        if not column:
-            return {"top_5": [], "bottom_5": []} # Retorna ranking vazio se a métrica for inválida
-
-        all_mun_data = list(self.municipios_data.get(age_group, {}).values())
-        if not all_mun_data:
-            return {"top_5": [], "bottom_5": []} # Retorna ranking vazio se não houver dados para a faixa etária
-
-        # Filtra dados para garantir que a coluna da métrica exista e seja um número
-        valid_data = [d for d in all_mun_data if isinstance(d.get(column), (int, float))]
-        
-        # Se após a filtragem não sobrar nenhum dado válido, retorna rankings vazios
-        if not valid_data:
+    def get_ranking_by_metric(self, metric: str, age_group: str = 'geral'):
+        file_path = os.path.join(RANKING_DIR, f'ranking_{metric}_{age_group}.json')
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except FileNotFoundError:
+            print(f"ERRO: Arquivo de ranking 'ranking_{metric}_{age_group}.json' não encontrado.")
             return {"top_5": [], "bottom_5": []}
-
-        ascending = True if metric == 'vulnerabilidade' else False
-        
-        sorted_data = sorted(valid_data, key=lambda x: x.get(column, 0), reverse=not ascending)
-        
-        top_5 = [{"municipio": item['NM_MUN_demanda'], "value": item[column]} for item in sorted_data[:top_n]]
-        bottom_5 = [{"municipio": item['NM_MUN_demanda'], "value": item[column]} for item in sorted_data[-top_n:]]
-        
-        # Garante que a ordenação do bottom 5 seja a inversa do top 5
-        if not ascending:
-            bottom_5.sort(key=lambda x: x['value'], reverse=False)
-        else:
-            bottom_5.sort(key=lambda x: x['value'], reverse=True)
-
-        return {"top_5": top_5, "bottom_5": bottom_5}
 
 data_processor = DataProcessor()

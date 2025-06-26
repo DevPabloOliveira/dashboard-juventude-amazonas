@@ -1,0 +1,46 @@
+{
+  "top_5": [
+    {
+      "municipio": "MANAUS",
+      "value": 2670.8362887818853
+    },
+    {
+      "municipio": "MANICOR\u00c9",
+      "value": 2190.2674687465224
+    },
+    {
+      "municipio": "APU\u00cd",
+      "value": 2026.1950617523125
+    },
+    {
+      "municipio": "PRESIDENTE FIGUEIREDO",
+      "value": 1876.3028453110735
+    },
+    {
+      "municipio": "JAPUR\u00c1",
+      "value": 1869.0395303680289
+    }
+  ],
+  "bottom_5": [
+    {
+      "municipio": "MANAQUIRI",
+      "value": 1104.2016624773485
+    },
+    {
+      "municipio": "IPIXUNA",
+      "value": 1135.1778877874212
+    },
+    {
+      "municipio": "UARINI",
+      "value": 1142.0206056406348
+    },
+    {
+      "municipio": "BERURI",
+      "value": 1159.2478960324356
+    },
+    {
+      "municipio": "ANAM\u00c3",
+      "value": 1164.891190523991
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "top_5": [
+    {
+      "municipio": "MANAUS",
+      "value": 186009
+    },
+    {
+      "municipio": "MANACAPURU",
+      "value": 9509
+    },
+    {
+      "municipio": "ITACOATIARA",
+      "value": 9480
+    },
+    {
+      "municipio": "PARINTINS",
+      "value": 9389
+    },
+    {
+      "municipio": "TEF\u00c9",
+      "value": 7365
+    }
+  ],
+  "bottom_5": [
+    {
+      "municipio": "ITAPIRANGA",
+      "value": 899
+    },
+    {
+      "municipio": "JAPUR\u00c1",
+      "value": 954
+    },
+    {
+      "municipio": "ANAM\u00c3",
+      "value": 958
+    },
+    {
+      "municipio": "AMATUR\u00c1",
+      "value": 984
+    },
+    {
+      "municipio": "SILVES",
+      "value": 1009
+    }
+  ]
+}

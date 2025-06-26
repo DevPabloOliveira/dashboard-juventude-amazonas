@@ -1,0 +1,46 @@
+{
+  "top_5": [
+    {
+      "municipio": "NHAMUND\u00c1",
+      "value": 0.49804067422702564
+    },
+    {
+      "municipio": "CAREIRO DA V\u00c1RZEA",
+      "value": 0.49841610955843835
+    },
+    {
+      "municipio": "JURU\u00c1",
+      "value": 0.5022150455450336
+    },
+    {
+      "municipio": "MANAQUIRI",
+      "value": 0.503813043507348
+    },
+    {
+      "municipio": "ANAM\u00c3",
+      "value": 0.5080736043968469
+    }
+  ],
+  "bottom_5": [
+    {
+      "municipio": "BENJAMIN CONSTANT",
+      "value": 0.6447910018254231
+    },
+    {
+      "municipio": "IRANDUBA",
+      "value": 0.6429994525718846
+    },
+    {
+      "municipio": "SANTO ANT\u00d4NIO DO I\u00c7\u00c1",
+      "value": 0.6244650381549423
+    },
+    {
+      "municipio": "ENVIRA",
+      "value": 0.619874142225111
+    },
+    {
+      "municipio": "MANAUS",
+      "value": 0.6194258034144983
+    }
+  ]
+}

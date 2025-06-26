@@ -1,0 +1,64 @@
+{
+  "geral": {
+    "total_jovens": 1056498,
+    "renda_media": 2105.03,
+    "taxa_alfabetizacao_jovens": 97.64,
+    "distribuicao_etaria": {
+      "15 a 19": 366102,
+      "20 a 24": 360746,
+      "25 a 29": 329650
+    },
+    "distribuicao_raca": {
+      "branca": 183252,
+      "preta": 40206,
+      "parda": 734642,
+      "indigena": 75162,
+      "amarela": 163
+    }
+  },
+  "15-19": {
+    "total_jovens": 366102,
+    "renda_media": 2105.03,
+    "taxa_alfabetizacao_jovens": 97.7,
+    "distribuicao_etaria": {
+      "15 a 19": 366102
+    },
+    "distribuicao_raca": {
+      "branca": 63619,
+      "preta": 11515,
+      "parda": 253121,
+      "indigena": 30323,
+      "amarela": 46
+    }
+  },
+  "20-24": {
+    "total_jovens": 360746,
+    "renda_media": 2105.03,
+    "taxa_alfabetizacao_jovens": 97.71,
+    "distribuicao_etaria": {
+      "20 a 24": 360746
+    },
+    "distribuicao_raca": {
+      "branca": 62886,
+      "preta": 14183,
+      "parda": 250835,
+      "indigena": 25119,
+      "amarela": 54
+    }
+  },
+  "25-29": {
+    "total_jovens": 329650,
+    "renda_media": 2105.03,
+    "taxa_alfabetizacao_jovens": 97.49,
+    "distribuicao_etaria": {
+      "25 a 29": 329650
+    },
+    "distribuicao_raca": {
+      "branca": 56747,
+      "preta": 14508,
+      "parda": 230686,
+      "indigena": 19720,
+      "amarela": 63
+    }
+  }
+}

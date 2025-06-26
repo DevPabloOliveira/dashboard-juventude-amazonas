@@ -1,0 +1,46 @@
+{
+  "top_5": [
+    {
+      "municipio": "MANAUS",
+      "value": 99.03069206328726
+    },
+    {
+      "municipio": "BOA VISTA DO RAMOS",
+      "value": 98.90295358649789
+    },
+    {
+      "municipio": "PARINTINS",
+      "value": 98.84971775481947
+    },
+    {
+      "municipio": "SILVES",
+      "value": 98.51337958374629
+    },
+    {
+      "municipio": "S\u00c3O SEBASTI\u00c3O DO UATUM\u00c3",
+      "value": 98.35315645013723
+    }
+  ],
+  "bottom_5": [
+    {
+      "municipio": "PAUINI",
+      "value": 85.1569933396765
+    },
+    {
+      "municipio": "BARCELOS",
+      "value": 85.88957055214725
+    },
+    {
+      "municipio": "ATALAIA DO NORTE",
+      "value": 86.96947133283693
+    },
+    {
+      "municipio": "EIRUNEP\u00c9",
+      "value": 87.85205293518833
+    },
+    {
+      "municipio": "ENVIRA",
+      "value": 88.98550724637681
+    }
+  ]
+}
